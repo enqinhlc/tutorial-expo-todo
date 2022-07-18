@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Button from './Button';
+import { useAppContext } from './Context';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +26,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TodoItem({ todo, editTodo, deleteTodo, completeTodo }) {
+export default function TodoItem({ todo }) {
+  const { editTodo, completeTodo, deleteTodo } = useAppContext();
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -42,9 +44,9 @@ export default function TodoItem({ todo, editTodo, deleteTodo, completeTodo }) {
       </Text>
 
       <View style={styles.row}>
-        <Button title="Düzenle" onPress={editTodo} />
-        <Button title="Sil" onPress={deleteTodo} />
-        <Button title="Tamamla" onPress={completeTodo} />
+        <Button title="Düzenle" onPress={() => editTodo(todo)} />
+        <Button title="Sil" onPress={() => deleteTodo(todo)} />
+        <Button title="Tamamla" onPress={() => completeTodo(todo)} />
       </View>
     </View>
   );

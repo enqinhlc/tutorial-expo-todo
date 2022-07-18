@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, TextInput, View } from 'react-native';
 import Button from './Button';
+import { useAppContext } from './Context';
 
 const styles = StyleSheet.create({
   inputRow: {
@@ -20,17 +21,25 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TodoInput({ todoName, setTodoName, todoEkle }) {
+export default function TodoInput() {
+  const { appState, addTodo, saveEditTodo, mergeState } = useAppContext();
+  const { todoName, editTodoItem } = appState;
+
+  const todoInputOnPress = () => {
+    if (editTodoItem === null) addTodo();
+    else saveEditTodo();
+  };
+
   return (
     <View style={styles.inputRow}>
       <TextInput
         value={todoName}
         style={styles.input}
         onChangeText={(inputValue) => {
-          setTodoName(inputValue);
+          mergeState({ todoName: inputValue });
         }}
       />
-      <Button onPress={todoEkle} title="+" />
+      <Button onPress={todoInputOnPress} title="+" />
     </View>
   );
 }
